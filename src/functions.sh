@@ -109,3 +109,21 @@ function gdt_deploy_drupal8() {
 
     cd $ROOT
 }
+
+
+function gdt_deploy_symfony3() {
+    DIR=$1
+    TAG=$2
+    ROOT=$(pwd)
+
+    gdt_validate_arguments $DIR $TAG
+
+    cd $DIR
+    git fetch --all
+    git checkout $TAG
+
+    composer update -vvv
+    sudo su -s /bin/sh apache -c "php bin/console cache:clear --env=prod"
+
+    cd $ROOT
+}
